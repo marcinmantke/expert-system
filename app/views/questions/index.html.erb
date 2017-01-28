@@ -1,0 +1,27 @@
+<div class="row" style="padding-top: 10px; padding-left: 20px">
+  <div class="col-md-4">
+    <%= form_tag("/", method: "get") do %>
+      <h4><%= @option["pytanie"] %></h4>
+      <% @option.values[0..-2].flatten.each do |option| %>
+        <div class="form-group">
+          <%= radio_button_tag(:selection, option.to_sym) %>
+          <%= label_tag(option.to_sym, option) %>
+          <%= hidden_field_tag 'saved_type', @saved_type %>
+        </div>
+      <% end %>
+      <%= submit_tag("Przejdź dalej", class: "btn btn-primary") %>
+    <% end %>
+  </div>
+
+  <div clas="col-md-8">
+    <h4>Sugerowana specyfikacja:</h4>
+    <% if @saved_type %>
+      <p><strong>typ: </strong><%= @saved_type %></p>
+    <% end %>
+   <% @result.pluck(:name).uniq.each do |comp| %>
+      <p><strong><%= "#{comp}: " %></strong> <%= "#{@result.select{|r| r.name == comp}.pluck(:value).join(", ")}" %></p>
+   <% end %>
+  </div>
+
+</div>
+<%= @end_consequents %>
